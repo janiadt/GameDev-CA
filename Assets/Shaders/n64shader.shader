@@ -38,6 +38,7 @@ Shader "Custom/N64Filter"
         struct Input
         {
             float2 uv_MainTex;
+            fixed4 color : COLOR0;
         };
 
 
@@ -85,7 +86,9 @@ Shader "Custom/N64Filter"
         void surf (Input IN, inout SurfaceOutput o)
         {
             fixed4 c = N64Filtering(_MainTex, IN.uv_MainTex, _MainTex_TexelSize);
-            o.Albedo = c.rgb;
+            // Added vertex paint to the final albedo of the texture
+            o.Albedo = c.rgb * IN.color;
+            
         }
         ENDCG
 
