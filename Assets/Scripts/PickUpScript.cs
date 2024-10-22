@@ -25,8 +25,7 @@ public class PickUpScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        itemAudio = gameObject.GetComponent<AudioSource>();
-
+        itemAudio = gameObject.GetComponent<AudioSource>();;
     }
 
     // Update is called once per frame
@@ -44,7 +43,9 @@ public class PickUpScript : MonoBehaviour
         }
         if (hasParticles){
             gameObject.transform.Find("Particle System").gameObject.SetActive(false);
+            PickupCounter.pickupCounter.shroomIterate();
         }
+        
         gameObject.transform.Find("r").gameObject.SetActive(false);
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         gameObject.GetComponent<BoxCollider>().enabled = false;
