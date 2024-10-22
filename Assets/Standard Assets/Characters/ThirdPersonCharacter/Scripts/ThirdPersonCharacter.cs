@@ -15,6 +15,20 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		[SerializeField] float m_MoveSpeedMultiplier = 1f;
 		[SerializeField] float m_AnimSpeedMultiplier = 1f;
 		[SerializeField] float m_GroundCheckDistance = 0.1f;
+		[SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
+        [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
+
+		[SerializeField] private AudioClip[] m_FootstepSounds;
+
+		[SerializeField] [Range(0f, 1f)] private float m_RunstepLenghten;
+
+		private bool m_isWalking;
+
+		private AudioSource m_AudioSource;
+
+		private float m_NextStep;
+
+		private float m_StepCycle;
 
 		Rigidbody m_Rigidbody;
 		Animator m_Animator;
@@ -29,14 +43,22 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
 
+		private bool isStanding;
+
+		private bool m_PreviouslyGrounded;
+
 
 		void Start()
 		{
+			m_PreviouslyGrounded = true;
+			m_StepCycle = 0f;
+			m_NextStep = m_StepCycle/2f;
 			m_Animator = GetComponent<Animator>();
 			m_Rigidbody = GetComponent<Rigidbody>();
 			m_Capsule = GetComponent<CapsuleCollider>();
 			m_CapsuleHeight = m_Capsule.height;
 			m_CapsuleCenter = m_Capsule.center;
+			m_AudioSource = GetComponent<AudioSource>();
 
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
@@ -62,10 +84,24 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			if (m_IsGrounded)
 			{
 				HandleGroundedMovement(crouch, jump);
+				m_isWalking = true;
+				
 			}
 			else
 			{
 				HandleAirborneMovement();
+				m_isWalking = false;
+			}
+
+			if (!(move.x == 0 && move.y == 0)){
+				ProgressStepCycle(m_isWalking ? 1.2f : 0.05f);
+            }    
+				
+			
+			
+
+			if (!m_PreviouslyGrounded && m_IsGrounded){
+				PlayLandingSound();
 			}
 
 			ScaleCapsuleForCrouching(crouch);
@@ -73,7 +109,59 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 			// send input and other state parameters to the animator
 			UpdateAnimator(move);
+
+			m_PreviouslyGrounded = m_IsGrounded;
 		}
+
+		private void ProgressStepCycle(float speed)
+        {
+            if (GetComponent<Rigidbody>().velocity.sqrMagnitude > 0)
+            {
+                m_StepCycle += (GetComponent<Rigidbody>().velocity.magnitude + (speed*(m_isWalking ? 1f : m_RunstepLenghten)))*
+                             Time.fixedDeltaTime;
+            }
+
+            if (!(m_StepCycle > m_NextStep))
+            {
+                return;
+            }
+
+            m_NextStep = m_StepCycle + 1.44f;
+
+			
+            
+            PlayFootStepAudio();
+            
+        }
+
+		private void PlayFootStepAudio()
+        {
+            if (!m_IsGrounded || GetComponent<Rigidbody>().velocity.sqrMagnitude == 0)
+            {
+                return;
+            }
+            // pick & play a random footstep sound from the array,
+            // excluding sound at index 0
+            int n = Random.Range(1, m_FootstepSounds.Length);
+            m_AudioSource.clip = m_FootstepSounds[n];
+            m_AudioSource.PlayOneShot(m_AudioSource.clip);
+            // move picked sound to index 0 so it's not picked next time
+            m_FootstepSounds[n] = m_FootstepSounds[0];
+            m_FootstepSounds[0] = m_AudioSource.clip;
+        }
+
+		private void PlayJumpSound()
+        {
+            m_AudioSource.clip = m_JumpSound;
+            m_AudioSource.Play();
+        }
+
+		private void PlayLandingSound()
+        {
+            m_AudioSource.clip = m_LandSound;
+            m_AudioSource.Play();
+            m_NextStep = m_StepCycle + .5f;
+        }
 
 
 		void ScaleCapsuleForCrouching(bool crouch)
@@ -160,6 +248,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			m_Rigidbody.AddForce(extraGravityForce);
 
 			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
+			
 		}
 
 
@@ -168,6 +257,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			// check whether conditions are right to allow a jump:
 			if (jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
 			{
+				PlayJumpSound();
 				// jump!
 				m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, m_JumpPower, m_Rigidbody.velocity.z);
 				m_IsGrounded = false;
@@ -213,6 +303,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 				m_GroundNormal = hitInfo.normal;
 				m_IsGrounded = true;
 				m_Animator.applyRootMotion = true;
+				
 			}
 			else
 			{
