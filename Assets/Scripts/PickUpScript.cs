@@ -25,7 +25,7 @@ public class PickUpScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        itemAudio = gameObject.GetComponent<AudioSource>();;
+        itemAudio = gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
