@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class SceneSwapPlane : MonoBehaviour
-{   
-    [SerializeField]
-    private string sceneToLoad;
+
+public class MenuScript : MonoBehaviour
+{
     // Start is called before the first frame update
     void Start()
     {
@@ -19,7 +17,11 @@ public class SceneSwapPlane : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(){
-        SceneManager.LoadScene(sceneToLoad);
+    public void PlayScene(){
+        SceneManager.LoadScene("SwampLevel");
+    }
+
+    public void QuitGame(){
+        Application.Quit();
     }
 }

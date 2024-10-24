@@ -12,7 +12,7 @@ public class PickupCounter : MonoBehaviour
     public static PickupCounter pickupCounter;
 
     [SerializeField]
-    private int amountOfShrooms;
+    public int amountOfShrooms;
     [SerializeField]
     private TextMeshProUGUI text;
     [SerializeField]
