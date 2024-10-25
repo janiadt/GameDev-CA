@@ -30,11 +30,12 @@ public class NPCBehavior : MonoBehaviour
     void OnTriggerEnter(){
         dialogue.text = "Bring me 12 mushrooms";
 
+    if (PickupCounter.pickupCounter != null)
         if (PickupCounter.pickupCounter.amountOfShrooms >= 12){
             dialogue.text = "You may pass, we will meet again";
 
             passCollider.isTrigger = true;
-        }
+        } 
     }
 
     void OnTriggerExit(){

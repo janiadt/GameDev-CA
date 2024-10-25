@@ -56,11 +56,13 @@ public class PickupCounter : MonoBehaviour
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode){
 
         Debug.Log("Re-Initializing", this);
-
-        text = GameObject.Find("ShroomCounter").GetComponent<TextMeshProUGUI>();
-        amountOfShrooms = pickupCounter.amountOfShrooms;
-        text.text = amountOfShrooms.ToString();
-        Debug.Log(amountOfShrooms);
+        if (scene.name != "MainMenu"){
+            text = GameObject.Find("ShroomCounter").GetComponent<TextMeshProUGUI>();
+            amountOfShrooms = pickupCounter.amountOfShrooms;
+            text.text = amountOfShrooms.ToString();
+            Debug.Log(amountOfShrooms);
+        }
+        
     }
 
 }
