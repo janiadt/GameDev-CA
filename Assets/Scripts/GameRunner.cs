@@ -10,7 +10,7 @@ public class GameRunner : MonoBehaviour
     private Camera mainCamera;
 
     [SerializeField]
-    private TextMeshProUGUI playerThoughs;
+    private TextMeshProUGUI playerThoughts;
 
     // This will govern how much of an item the player needs to collect.
     [SerializeField]
@@ -29,10 +29,10 @@ public class GameRunner : MonoBehaviour
     }
 
     private void textReveal(){
-        playerThoughs.text = "I need to find 12 mushrooms...";
+        playerThoughts.text = "I need to find 12 mushrooms...";
     }
 
     private void textClear(){
-        playerThoughs.text = "";
+        playerThoughts.text = "";
     }
 }
