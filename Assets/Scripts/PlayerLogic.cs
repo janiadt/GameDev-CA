@@ -1,19 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerLogic : MonoBehaviour
 {
+    public static PlayerLogic _playerLogic;                     
 
     [SerializeField]
     private int maxHp;
 
     [SerializeField]
-    private int currentHp;
+    public int currentHp {get; private set;}
 
     // Start is called before the first frame update
     void Start()
     {
+        if (_playerLogic == null){                      //Instantiatin the singleton so that other classes can access our playerLogic
+            _playerLogic = this;
+        }
+        
+        currentHp = maxHp;
         
     }
 
@@ -23,11 +30,11 @@ public class PlayerLogic : MonoBehaviour
         
     }
 
-    public void TakeDamage(int damageToTake){
+    public void TakeDamage(int damageToTake){                   //General takeDamage method that will be used for enemies and hazards. If the player has less than 0 hp, they die, else they take the given damage
         if (currentHp > 0){
             currentHp -= damageToTake;
         }
-        else {
+        if (currentHp <= 0){
             Debug.Log("I'm dead");
         }
     }
