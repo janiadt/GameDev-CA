@@ -9,7 +9,8 @@ Shader "Custom/N64Filter"
     {
         Tags { "QUEUE"="Geometry-100" "RenderType"="Opaque" "TerrainCompatible"="true" }
         LOD 200
-
+        
+        Cull Off
         
 
         CGPROGRAM
