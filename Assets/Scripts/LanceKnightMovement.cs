@@ -20,6 +20,7 @@ public class LanceKnightMovement : MonoBehaviour
 	public float airSpeed = 1; //speed
 	public float orbitSpeed = 120; //speed of the orbiting???? idk what unit its in lmao please send help
 	public float orbitVelocity = 10; //active speed variable
+	public float launchMod = 10; //yeah ok
 
 
 	public float weight = 1; // gravity modifier?
@@ -139,12 +140,12 @@ public class LanceKnightMovement : MonoBehaviour
 				later, more xspeed,
 
 				*/
-				magnitude = scale(orbitAngle, 0, 500, 0, 20*launchSpeed); 
+				magnitude = scale(orbitAngle, 0, 500, 0, launchMod*2*launchSpeed); 
 				// rotate xSpeed towards player facing (?)
 				Vector3 temp = new Vector3(0, 0, 1);
 				movementDirection = Quaternion.AngleAxis(transform.rotation.eulerAngles.y, Vector3.up) * temp;
 
-				ySpeed = scale(orbitAngle, 0, 500, 10*launchSpeed, 1);
+				ySpeed = scale(orbitAngle, 0, 500, launchMod*launchSpeed, 1);
 
 				orbitAngle = 0; 
 			}

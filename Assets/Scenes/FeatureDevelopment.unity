@@ -852,7 +852,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 504224732}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.20772487, y: -3.2533653e-11, z: -4.906896e-12, w: 0.97818726}
+  m_LocalRotation: {x: -0.2077235, y: 0, z: 0, w: 0.9781876}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1509,8 +1509,9 @@ MonoBehaviour:
   groundSpeed: 3
   airSpeed: 1
   orbitSpeed: 120
-  orbitVelocity: 10
-  weight: 1
+  orbitVelocity: 3
+  launchMod: 6
+  weight: 0.3
 --- !u!1 &1226939787
 GameObject:
   m_ObjectHideFlags: 0
@@ -2173,7 +2174,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1757967505}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.20772487, y: -3.2533653e-11, z: -4.906896e-12, w: 0.97818726}
+  m_LocalRotation: {x: -0.2077235, y: 0, z: 0, w: 0.9781876}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2770,7 +2771,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2124423227}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.20772487, y: -3.2533653e-11, z: -4.906896e-12, w: 0.97818726}
+  m_LocalRotation: {x: -0.2077235, y: 0, z: 0, w: 0.9781876}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
