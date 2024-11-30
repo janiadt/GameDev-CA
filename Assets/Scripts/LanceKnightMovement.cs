@@ -20,7 +20,7 @@ public class LanceKnightMovement : MonoBehaviour
 	public float airSpeed = 1; //speed
 	public float orbitSpeed = 120; //speed of the orbiting???? idk what unit its in lmao please send help
 	public float orbitVelocity = 10; //active speed variable
-	public float launchMod = 10; //yeah ok
+	public float launchMod = 6; //yeah ok
 
 
 	public float weight = 1; // gravity modifier?
@@ -93,13 +93,14 @@ public class LanceKnightMovement : MonoBehaviour
 			if (Input.GetButtonDown("Jump")) {
 				// begin orbit sequence
 				// launchSpeed = magnitude/10 + 1;
-				launchSpeed = 0.1f + Mathf.Clamp01(movementDirection.magnitude);
-				magnitude = 5;
+				launchSpeed = 0.1f + Mathf.Clamp01(movementDirection.magnitude) * 2;
+				// magnitude = 5;
 				orbitPoint = pivotPoint.transform.position;
 
 				// debug to show where the pivoting point is
-				// Instantiate(pivotPoint, orbitPoint, transform.rotation);
-				orbitVelocity = magnitude;
+				// Instantiate(pivotPoint, orbitPoint, transform.rotation, transform.scale);
+
+				orbitVelocity = magnitude * 30;
 
 				orbitAngle = 0;
 				orbiting = true;
@@ -140,12 +141,12 @@ public class LanceKnightMovement : MonoBehaviour
 				later, more xspeed,
 
 				*/
-				magnitude = scale(orbitAngle, 0, 500, 0, launchMod*2*launchSpeed); 
+				magnitude = scale(orbitAngle, 0, 500, 0, launchMod*launchSpeed*0.6f); 
 				// rotate xSpeed towards player facing (?)
 				Vector3 temp = new Vector3(0, 0, 1);
 				movementDirection = Quaternion.AngleAxis(transform.rotation.eulerAngles.y, Vector3.up) * temp;
 
-				ySpeed = scale(orbitAngle, 0, 500, launchMod*launchSpeed, 1);
+				ySpeed = scale(orbitAngle, 0, 500, launchMod*launchSpeed*0.7f, 5);
 
 				orbitAngle = 0; 
 			}
@@ -182,6 +183,8 @@ public class LanceKnightMovement : MonoBehaviour
 			// attempt 3, please make this work
 
 			// transform.RotateAround(target.transform.position, Vector3.forward, degreesPerSecond * Time.deltaTime);
+
+			movementDirection = new Vector3(0, 0, 0);
 
 			Vector3 distance = new Vector3(orbitVelocity * Time.deltaTime, 0, 0);
 			distance = Quaternion.AngleAxis(transform.rotation.eulerAngles.y, Vector3.up) * distance;
