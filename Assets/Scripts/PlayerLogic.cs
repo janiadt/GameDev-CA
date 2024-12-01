@@ -13,6 +13,9 @@ public class PlayerLogic : MonoBehaviour
     [SerializeField]
     public int currentHp {get; private set;}
 
+    [SerializeField]
+    private Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +36,7 @@ public class PlayerLogic : MonoBehaviour
     public void TakeDamage(int damageToTake){                   //General takeDamage method that will be used for enemies and hazards. If the player has less than 0 hp, they die, else they take the given damage
         if (currentHp > 0){
             currentHp -= damageToTake;
+            animator.SetTrigger("damaged");                    //The animator will set the damaged trigger when the player takes damage. (SET UP PARTICLES HERE TOO)
         }
         if (currentHp <= 0){
             Debug.Log("I'm dead");
