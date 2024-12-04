@@ -15,6 +15,7 @@ public class HazardScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        waitBetweenDamageTicks = 2f;
         _dealDamage = dealDamage();
     }
 
@@ -25,8 +26,8 @@ public class HazardScript : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other){
-        if(other.tag == "Player"){
-            StartCoroutine(_dealDamage);                //Starting the specific dealDamage coroutine when player enters the hazard
+        if(other.tag == "Player" && PlayerLogic._playerLogic.invincibilityFramesActive != true){
+            StartCoroutine(_dealDamage);                //Starting the specific dealDamage coroutine when player enters the hazard          
         }
     }
 
@@ -35,10 +36,12 @@ public class HazardScript : MonoBehaviour
         if(other.tag == "Player"){
             Debug.Log("EXITED");   
             StopCoroutine(_dealDamage);                 //Coroutine stops when player leaves the hazard
+            PlayerLogic._playerLogic.invincibilityFramesActive = false;
         }
     }
 
     IEnumerator dealDamage(){
+        PlayerLogic._playerLogic.invincibilityFramesActive = true;        //Player has i-frames while they're taking damage from a hazard
         while (PlayerLogic._playerLogic.currentHp > 0){                     //While the player has more than 0 health, this runs
             PlayerLogic._playerLogic.TakeDamage(damageToDeal);                  
             Debug.Log(PlayerLogic._playerLogic.currentHp);

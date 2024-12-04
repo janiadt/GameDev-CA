@@ -12,9 +12,6 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     private GameObject player;
 
-    [SerializeField]
-    private float speed;
-
     // Start is called before the first frame update
     void Start()
     {
