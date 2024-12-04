@@ -122,7 +122,7 @@ public class LanceKnightMovement : MonoBehaviour
 			float airMagnitude = Mathf.Clamp01(airMovementDirection.magnitude) * 0.002f;
 			airMovementDirection = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up) * airMovementDirection;
 			airMovementDirection = airMovementDirection * airMagnitude;
-			print(airMovementDirection);
+			// print(airMovementDirection);
 
 			movementDirection += airMovementDirection;
 		}
@@ -141,13 +141,18 @@ public class LanceKnightMovement : MonoBehaviour
 				later, more xspeed,
 
 				*/
-				magnitude = scale(orbitAngle, 0, 500, 0, launchMod*launchSpeed*0.6f); 
+
+
+
+				magnitude = scale(orbitAngle, 0, 500, 0, launchMod*launchSpeed);
+			
+				ySpeed = scale(orbitAngle, 0, 500, launchMod*launchSpeed*0.7f, 5);
+
+
+
 				// rotate xSpeed towards player facing (?)
 				Vector3 temp = new Vector3(0, 0, 1);
 				movementDirection = Quaternion.AngleAxis(transform.rotation.eulerAngles.y, Vector3.up) * temp;
-
-				ySpeed = scale(orbitAngle, 0, 500, launchMod*launchSpeed*0.7f, 5);
-
 				orbitAngle = 0; 
 			}
 
@@ -198,7 +203,7 @@ public class LanceKnightMovement : MonoBehaviour
 			characterController.Move(orbitDirection);
 			if(characterController.collisionFlags != CollisionFlags.None){
 				//held space for too long
-				print("collided mid orbit");
+				// print("collided mid orbit");
 				orbiting = false;
 				orbitAngle = 0;
 			}
