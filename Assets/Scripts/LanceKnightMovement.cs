@@ -30,13 +30,16 @@ public class LanceKnightMovement : MonoBehaviour
 	private float orbitAngle; // one full rotation is 1000~ i think its framerate dependant
 	private bool orbiting = false;
 	private float launchSpeed = 0;
-	private float rotationSpeed = 200;
+	private float rotationSpeed = 500;
 
 	private Vector3 velocity;
 	private Vector3 movementDirection;
 	private	float magnitude;
 
 	private Quaternion debugAngle;
+
+	private float jumpLimit = 100; // minimum orbitangle before a jump
+
 	void Start()
     {
 		characterController = GetComponent<CharacterController>();
@@ -130,7 +133,10 @@ public class LanceKnightMovement : MonoBehaviour
 		if (!Input.GetButton("Jump")){
 			// Not Holding Jump
 			orbiting = false;
-			if(orbitAngle != 0)	{
+			//print(orbitAngle);
+			if(orbitAngle > jumpLimit)	{
+				// PLAYER HAS LET GO DURING ORBIT!!!
+
 				// print(movementDirection);
 				// add momentum
 				/*
