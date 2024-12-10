@@ -83,6 +83,7 @@ public class LanceKnightMovement : MonoBehaviour
 
 		if (characterController.isGrounded){
 			// normal movement
+			animator.SetBool("isFalling", false);
 
 			movementDirection = new Vector3(horizontalInput, 0, verticalInput);
 			magnitude = Mathf.Clamp01(movementDirection.magnitude) * groundSpeed;
@@ -111,6 +112,7 @@ public class LanceKnightMovement : MonoBehaviour
 		} 
 		else if (!orbiting) { // in air, not orbiting, falling? maybe.
 			ySpeed += (Physics.gravity.y - weight) * Time.deltaTime;
+			animator.SetBool("isFalling", true);
 
 			// air control
 			// print(movementDirection);
@@ -132,6 +134,7 @@ public class LanceKnightMovement : MonoBehaviour
 
 		if (!Input.GetButton("Jump")){
 			// Not Holding Jump
+			animator.SetBool("isJumping", false);
 			orbiting = false;
 			//print(orbitAngle);
 			if(orbitAngle > jumpLimit)	{
@@ -167,7 +170,8 @@ public class LanceKnightMovement : MonoBehaviour
 		if (orbiting) {
 			ySpeed = 0;
 			orbitAngle++;
-			
+			animator.SetBool("isJumping", true);
+
 			// give orbitSpeed velocity over time
 			orbitVelocity += 2;
 			if(orbitVelocity > orbitSpeed) orbitVelocity = orbitSpeed; // this feels good idk
@@ -221,10 +225,12 @@ public class LanceKnightMovement : MonoBehaviour
 		if (movementDirection != Vector3.zero) {
 			Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-			animator.SetBool("IsRunning", true);
+
+			animator.SetBool("isWalking", true);
+
 		}
 		else {
-			animator.SetBool("IsRunning", false);
+			animator.SetBool("isWalking", false);
 		}
 
 
