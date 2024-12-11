@@ -127,9 +127,13 @@ public class LanceKnightMovement : MonoBehaviour
 			float airMagnitude = Mathf.Clamp01(airMovementDirection.magnitude) * 0.002f;
 			airMovementDirection = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up) * airMovementDirection;
 			airMovementDirection = airMovementDirection * airMagnitude;
+			
 			// print(airMovementDirection);
 
 			movementDirection += airMovementDirection;
+
+			Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
 		}
 
 		if (!Input.GetButton("Jump")){
@@ -222,7 +226,7 @@ public class LanceKnightMovement : MonoBehaviour
 		}
 
 		// rotate the player to where they are facing
-		if (movementDirection != Vector3.zero) {
+		if (movementDirection != Vector3.zero && characterController.isGrounded == true) {
 			Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
 

@@ -45,22 +45,7 @@ public class PlayerLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {       
-            if (playerController.isGrounded){
-                animator.SetBool("isFalling", false);
-            } else {
-                animator.SetBool("isFalling", true);
-            }
-            if ((playerController.velocity.x != 0 || playerController.velocity.z != 0) && playerController.isGrounded == true){
-                animator.SetBool("isWalking", true);
-            } else {
-                animator.SetBool("isWalking", false);
-            }
-
-            if (Input.GetButtonDown("Jump")){
-                animator.SetBool("isJumping", true);
-            } else if (Input.GetButtonUp("Jump")){
-                animator.SetBool("isJumping", false);
-            }
+            
         
     }
 
