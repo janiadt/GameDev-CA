@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerLogic : MonoBehaviour
 {
-    public static PlayerLogic _playerLogic;                     
+    public static PlayerLogic _playerLogic;     //This is a singleton, which means only one player can exist at a time. Obviously this isn't multiplayer friendly, but it lets me set up events easier.                
 
     [SerializeField]
     private int maxHp;
@@ -30,6 +31,15 @@ public class PlayerLogic : MonoBehaviour
 
     public bool invincibilityFramesActive;
 
+    public bool isDead;
+
+    [SerializeField]
+    private GameObject attackCollider;
+
+    private bool justAttacked;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,7 +55,9 @@ public class PlayerLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {       
-            
+        if (Input.GetButtonDown("Fire1") && justAttacked == false && isDead != true){
+            StartCoroutine(attack());
+        }
         
     }
 
@@ -58,7 +70,9 @@ public class PlayerLogic : MonoBehaviour
             damageTexture.layer = 0;
         }
         if (currentHp <= 0){
+            animator.SetBool("isDead", true); 
             Debug.Log("I'm dead");
+            isDead = true;
         }
     }
 
@@ -76,5 +90,14 @@ public class PlayerLogic : MonoBehaviour
         damageTexture.layer = 1;
     }
 
-
+    IEnumerator attack(){
+        justAttacked = true;
+        attackCollider.SetActive(true);
+        animator.SetTrigger("attack");
+        Debug.Log("ATTACK");
+        yield return new WaitForSeconds(0.3f);
+        attackCollider.SetActive(false);
+        yield return new WaitForSeconds(0.3f);
+        justAttacked = false;
+    }
 }

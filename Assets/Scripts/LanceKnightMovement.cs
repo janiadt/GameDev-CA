@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LanceKnightMovement : MonoBehaviour
@@ -45,11 +47,16 @@ public class LanceKnightMovement : MonoBehaviour
 		characterController = GetComponent<CharacterController>();
 
 		animator = GetComponent<Animator>();
+
+		
 	}
 
 	// Update is called once per frame
 	void Update()
     {
+		if (PlayerLogic._playerLogic.isDead == true){	//When his health reaches zero in the PlayerLogic singleton
+			enabled = false;
+		}
 		/*
 		// please help
 
@@ -136,7 +143,7 @@ public class LanceKnightMovement : MonoBehaviour
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
 		}
 
-		if (!Input.GetButton("Jump")){
+		if (Input.GetButtonUp("Jump")){
 			// Not Holding Jump
 			animator.SetBool("isJumping", false);
 			orbiting = false;
@@ -217,6 +224,7 @@ public class LanceKnightMovement : MonoBehaviour
 			characterController.Move(orbitDirection);
 			if(characterController.collisionFlags != CollisionFlags.None){
 				//held space for too long
+				animator.SetBool("isJumping", false);
 				// print("collided mid orbit");
 				orbiting = false;
 				orbitAngle = 0;
