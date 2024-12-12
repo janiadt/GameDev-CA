@@ -6,6 +6,10 @@ using UnityEngine;
 using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.SceneManagement;
 
+// Health Meter
+using UnityEngine.UI;
+using UnityEngine.Events;
+
 public class PlayerLogic : MonoBehaviour
 {
     public static PlayerLogic _playerLogic;     //This is a singleton, which means only one player can exist at a time. Obviously this isn't multiplayer friendly, but it lets me set up events easier.                
@@ -41,6 +45,7 @@ public class PlayerLogic : MonoBehaviour
 
     private ObjectCollisions attackCollisions;
 
+	[SerializeField] private Image HealthBar = null; //UI Element
 
 
     // Start is called before the first frame update
@@ -72,6 +77,9 @@ public class PlayerLogic : MonoBehaviour
             // StartCoroutine(characterFlash());    //This coroutine is started and plays out over the course of the 2 seconds invulnerability frame
             Invoke("DamageTextureFlash", 0.3f);        //Texture pops up when the player takes damage
             damageTexture.layer = 0;
+			HealthBar.fillAmount = (float)currentHp / maxHp; //Turns currentHp into a 0-1 value for the UI
+			print((float)currentHp / maxHp);
+			// If we change the sprite out on HealthBar we could do HealthBar.colour to change on low health?
         }
         if (currentHp <= 0){
             animator.SetBool("isDead", true); 
