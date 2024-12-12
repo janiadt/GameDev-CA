@@ -77,8 +77,7 @@ public class PlayerLogic : MonoBehaviour
             // StartCoroutine(characterFlash());    //This coroutine is started and plays out over the course of the 2 seconds invulnerability frame
             Invoke("DamageTextureFlash", 0.3f);        //Texture pops up when the player takes damage
             damageTexture.layer = 0;
-			HealthBar.fillAmount = (float)currentHp / maxHp; //Turns currentHp into a 0-1 value for the UI
-			print((float)currentHp / maxHp);
+			HealthBar.fillAmount = (float)(currentHp - 0.25f) / (maxHp - 0.25f); //Turns currentHp into a 0-1 value for the UI
 			// If we change the sprite out on HealthBar we could do HealthBar.colour to change on low health?
         }
         if (currentHp <= 0){
