@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.SceneManagement;
 
 public class PlayerLogic : MonoBehaviour
@@ -34,9 +35,11 @@ public class PlayerLogic : MonoBehaviour
     public bool isDead;
 
     [SerializeField]
-    private GameObject attackCollider;
+    private GameObject attackBox;
 
     private bool justAttacked;
+
+    private ObjectCollisions attackCollisions;
 
 
 
@@ -50,13 +53,14 @@ public class PlayerLogic : MonoBehaviour
         currentHp = maxHp;
         playerModel = playerModel.transform.GetChild(0).gameObject;
         playerController = player.GetComponent<CharacterController>();
+        attackCollisions = attackBox.GetComponent<ObjectCollisions>();
     }
 
     // Update is called once per frame
     void Update()
     {       
         if (Input.GetButtonDown("Fire1") && justAttacked == false && isDead != true){
-            StartCoroutine(attack());
+            StartCoroutine(Attack());
         }
         
     }
@@ -66,7 +70,7 @@ public class PlayerLogic : MonoBehaviour
             currentHp -= damageToTake;
             animator.SetTrigger("damaged");                    //The animator will set the damaged trigger when the player takes damage.
             // StartCoroutine(characterFlash());    //This coroutine is started and plays out over the course of the 2 seconds invulnerability frame
-            Invoke("damageTextureFlash", 0.3f);        //Texture pops up when the player takes damage
+            Invoke("DamageTextureFlash", 0.3f);        //Texture pops up when the player takes damage
             damageTexture.layer = 0;
         }
         if (currentHp <= 0){
@@ -76,7 +80,7 @@ public class PlayerLogic : MonoBehaviour
         }
     }
 
-    IEnumerator characterFlash(){
+    IEnumerator CharacterFlash(){
         for (int i = 0; i < 5; i++){
             playerModel.layer = 1;   //Enabling the mesh renderer so it looks like the character is blinking when they take damage
             yield return new WaitForSeconds(0.2f);
@@ -86,17 +90,37 @@ public class PlayerLogic : MonoBehaviour
         
     }
 
-    void damageTextureFlash(){
+    void DamageTextureFlash(){
         damageTexture.layer = 1;
     }
 
-    IEnumerator attack(){
+    IEnumerator Attack(){
         justAttacked = true;
-        attackCollider.SetActive(true);
+
+        // Casting a overlap at the location of the attackBox. If any hitbox is overlapping this and its an enemy, it takes damage and gets added to a list, so it doesn't take extra damage
+        Collider[] tempObjects = Physics.OverlapSphere(attackBox.transform.position, 2f);
+        List<GameObject> alreadyHit = new List<GameObject>();
+
+        // Test sphere
+
+        // GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        // sphere.transform.position = attackBox.transform.position;
+        // sphere.transform.localScale = new Vector3(1f, 1f, 1f);
+        // sphere.GetComponent<SphereCollider>().radius = 2f;
+        // sphere.GetComponent<SphereCollider>().enabled = false;
+
+        
+        for(int i = 0; i < tempObjects.Length; i++){
+            if (tempObjects[i].gameObject.CompareTag("Enemy") && !alreadyHit.Contains(tempObjects[i].gameObject)){
+                Debug.Log("HIT");
+                tempObjects[i].gameObject.GetComponent<EnemyBehavior>().StartCoroutine("TakeDamage", 50);
+            }
+            Debug.Log(tempObjects[i].gameObject.name);
+            alreadyHit.Add(tempObjects[i].gameObject);
+        }
+
         animator.SetTrigger("attack");
-        Debug.Log("ATTACK");
-        yield return new WaitForSeconds(0.3f);
-        attackCollider.SetActive(false);
+        Debug.Log("ATTACK");      
         yield return new WaitForSeconds(0.3f);
         justAttacked = false;
     }
