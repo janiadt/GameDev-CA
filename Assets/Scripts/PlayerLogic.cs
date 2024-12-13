@@ -15,35 +15,34 @@ public class PlayerLogic : MonoBehaviour
     public static PlayerLogic _playerLogic;     //This is a singleton, which means only one player can exist at a time. Obviously this isn't multiplayer friendly, but it lets me set up events easier.                
 
     [SerializeField]
-    private int maxHp;
+    public int maxHp;
 
     [SerializeField]
-    public int currentHp {get; private set;}
+    public int currentHp;
+    [SerializeField]
+    public Animator animator;
 
     [SerializeField]
-    private Animator animator;
+    public GameObject playerModel;
 
     [SerializeField]
-    private GameObject playerModel;
+    public GameObject player;
+
+    public CharacterController playerController;
 
     [SerializeField]
-    private GameObject player;
-
-    private CharacterController playerController;
-
-    [SerializeField]
-    private GameObject damageTexture;
+    public GameObject damageTexture;
 
     public bool invincibilityFramesActive;
 
     public bool isDead;
 
     [SerializeField]
-    private GameObject attackBox;
+    public GameObject attackBox;
 
     private bool justAttacked;
 
-	[SerializeField] private Image HealthBar = null; //UI Element
+	[SerializeField] public Image HealthBar = null; //UI Element
 
 
     // Start is called before the first frame update
@@ -89,6 +88,8 @@ public class PlayerLogic : MonoBehaviour
             Debug.Log("I'm dead");
             isDead = true;
             Invoke("deathSwitchScene", 5f);
+        } else {
+            isDead = false;
         }
     }
 
@@ -139,5 +140,25 @@ public class PlayerLogic : MonoBehaviour
 
     void deathSwitchScene(){
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void initializeAll(){
+        if (_playerLogic == null){                      //Instantiatin the singleton so that other classes can access our playerLogic
+            _playerLogic = this;
+        }
+        
+        currentHp = maxHp;
+        playerModel = GameObject.Find("PonchoGuy15");
+
+        player = GameObject.Find("Player1");
+        animator = player.GetComponent<Animator>();
+        
+        damageTexture = GameObject.Find("damageParticle");
+        attackBox = GameObject.Find("AttackSpawner");
+
+        HealthBar = GameObject.Find("HealthBar").GetComponent<Image>();
+
+        isDead = false;
+        invincibilityFramesActive = false;
     }
 }

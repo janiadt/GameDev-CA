@@ -33,7 +33,7 @@ public class PickupCounter : MonoBehaviour
     }
     void Start()
     {   
-        
+        text = GameObject.Find("ShroomCounter").GetComponent<TextMeshProUGUI>();
         
     }
 
@@ -57,10 +57,13 @@ public class PickupCounter : MonoBehaviour
 
         Debug.Log("Re-Initializing", this);
         if (scene.name != "MainMenu"){
+            PlayerLogic._playerLogic.currentHp = PlayerLogic._playerLogic.maxHp;
             text = GameObject.Find("ShroomCounter").GetComponent<TextMeshProUGUI>();
             amountOfShrooms = pickupCounter.amountOfShrooms;
             text.text = amountOfShrooms.ToString();
             Debug.Log(amountOfShrooms);
+
+            PlayerLogic._playerLogic.initializeAll();
         }
         
     }

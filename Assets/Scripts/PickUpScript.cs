@@ -26,6 +26,7 @@ public class PickUpScript : MonoBehaviour
     void Start()
     {
         itemAudio = gameObject.GetComponent<AudioSource>();
+        player = GameObject.Find("Player1").transform;
     }
 
     // Update is called once per frame

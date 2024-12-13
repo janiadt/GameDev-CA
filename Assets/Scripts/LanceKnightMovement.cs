@@ -48,14 +48,15 @@ public class LanceKnightMovement : MonoBehaviour
 
 		animator = GetComponent<Animator>();
 
+		Cursor.lockState = CursorLockMode.Locked;
+
 	}
 
 	// Update is called once per frame
 	void Update()
     {
-		if (PlayerLogic._playerLogic.isDead == true){	//When his health reaches zero in the PlayerLogic singleton
-			enabled = false;
-		}
+		if (PlayerLogic._playerLogic.isDead == false){	//When his health reaches zero in the PlayerLogic singleton
+			
 		/*
 		// please help
 
@@ -255,6 +256,7 @@ public class LanceKnightMovement : MonoBehaviour
 		// Vector3 newangle = debugangle * transform.forward;
 
 		Debug.DrawRay(transform.position, debugAngle * transform.forward,new Color(255,0,0));
+		}
 	}
 
 	public static Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Quaternion angle)
