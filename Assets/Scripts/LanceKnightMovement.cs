@@ -40,7 +40,7 @@ public class LanceKnightMovement : MonoBehaviour
 
 	private Quaternion debugAngle;
 
-	private float jumpLimit = 100; // minimum orbitangle before a jump
+	private float jumpLimit = 43; // minimum orbitangle before a jump
 
 	void Start()
     {
@@ -48,7 +48,6 @@ public class LanceKnightMovement : MonoBehaviour
 
 		animator = GetComponent<Animator>();
 
-		
 	}
 
 	// Update is called once per frame
@@ -164,9 +163,9 @@ public class LanceKnightMovement : MonoBehaviour
 
 
 
-				magnitude = scale(orbitAngle, 0, 500, 0, launchMod*launchSpeed);
+				magnitude = scale(orbitAngle, 0, 250, 0, launchMod*launchSpeed);
 			
-				ySpeed = scale(orbitAngle, 0, 500, launchMod*launchSpeed*0.7f, 5);
+				ySpeed = scale(orbitAngle, 0, 250, launchMod*launchSpeed*0.7f, 5);
 
 
 

@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "GameDev-CA.sln"
+    "dotnet.defaultSolution": "GameDev-CA 2.sln"
 }
