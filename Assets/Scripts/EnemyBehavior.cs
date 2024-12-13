@@ -35,6 +35,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         enemy = transform.GetComponent<NavMeshAgent>();
         originalPosition = transform.position;
+        player = GameObject.Find("Player1");
     }
 
     // Update is called once per frame

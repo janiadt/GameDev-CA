@@ -43,8 +43,6 @@ public class PlayerLogic : MonoBehaviour
 
     private bool justAttacked;
 
-    private ObjectCollisions attackCollisions;
-
 	[SerializeField] private Image HealthBar = null; //UI Element
 
 
@@ -56,9 +54,15 @@ public class PlayerLogic : MonoBehaviour
         }
         
         currentHp = maxHp;
-        playerModel = playerModel.transform.GetChild(0).gameObject;
-        playerController = player.GetComponent<CharacterController>();
-        attackCollisions = attackBox.GetComponent<ObjectCollisions>();
+        playerModel = GameObject.Find("PonchoGuy15");
+
+        player = GameObject.Find("Player1");
+        animator = player.GetComponent<Animator>();
+        
+        damageTexture = GameObject.Find("damageParticle");
+        attackBox = GameObject.Find("AttackSpawner");
+
+        HealthBar = GameObject.Find("HealthBar").GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -84,6 +88,7 @@ public class PlayerLogic : MonoBehaviour
             animator.SetBool("isDead", true); 
             Debug.Log("I'm dead");
             isDead = true;
+            Invoke("deathSwitchScene", 5f);
         }
     }
 
@@ -130,5 +135,9 @@ public class PlayerLogic : MonoBehaviour
         Debug.Log("ATTACK");      
         yield return new WaitForSeconds(0.3f);
         justAttacked = false;
+    }
+
+    void deathSwitchScene(){
+        SceneManager.LoadScene("MainMenu");
     }
 }
