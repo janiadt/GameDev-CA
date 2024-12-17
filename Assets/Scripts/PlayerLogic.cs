@@ -44,13 +44,16 @@ public class PlayerLogic : MonoBehaviour
 
 	[SerializeField] public Image HealthBar = null; //UI Element
 
+    void Awake(){
+        if (_playerLogic == null){                      //Instantiatin the singleton so that other classes can access our playerLogic
+            _playerLogic = this;
+        }
+        
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        if (_playerLogic == null){                      //Instantiatin the singleton so that other classes can access our playerLogic
-            _playerLogic = this;
-        }
         
         currentHp = maxHp;
         playerModel = GameObject.Find("PonchoGuy15");
@@ -67,7 +70,7 @@ public class PlayerLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {       
-        if (Input.GetButtonDown("Fire1") && justAttacked == false && isDead != true){
+        if (Input.GetButtonDown("Fire1") && justAttacked == false && isDead != true && SceneManager.GetActiveScene().name != "MainMenu"){
             StartCoroutine(Attack());
         }
         

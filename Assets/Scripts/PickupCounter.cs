@@ -53,6 +53,8 @@ public class PickupCounter : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    // Scene switching main script
+
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode){
 
         Debug.Log("Re-Initializing", this);
@@ -64,6 +66,8 @@ public class PickupCounter : MonoBehaviour
             Debug.Log(amountOfShrooms);
 
             PlayerLogic._playerLogic.initializeAll();
+        } else {
+            Cursor.lockState = CursorLockMode.None;
         }
         
     }

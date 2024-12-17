@@ -41,6 +41,7 @@ public class EnemyBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        gameObject.GetComponent<NavMeshAgent>().enabled = true;
         AggroManagement();
         if (isStunned == false && isAggroed == true){
             lastKnownPlayerPosition = player.transform.position;
